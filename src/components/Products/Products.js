@@ -7,21 +7,23 @@ import {
     CardTitle, CardSubtitle, CardImg, Button, ListGroupItem
 } from 'reactstrap';
 import ListGroup from "reactstrap/es/ListGroup";
-import {NavLink as ToLink} from "react-router-dom";
+import {NavLink as ToLink, useParams} from "react-router-dom";
 
-const Products = props => {
+const Products = () => {
     const dispatch = useDispatch();
 
     const products = useSelector(state => state.products);
     const user = useSelector(state => state.authorization.user.token);
 
+    const params = useParams();
+
     useEffect(() => {
-        dispatch(getProducts(props.match.params.id));
+        dispatch(getProducts(params.id));
         dispatch(getCategories());
-    }, [dispatch, props.match.params.id]);
+    }, [dispatch, params.id]);
 
     const productsCards = products.products.map(e => (
-        <Card className='w-25' key={e._id}>
+        <Card  className='w-25' key={e._id}>
             <CardImg top style={{width: '100%'}} src={"http://localhost:8000/uploads/"+e.image} alt={products.title} />
             <CardBody>
                 <CardTitle>{e.title}</CardTitle>
@@ -39,12 +41,13 @@ const Products = props => {
 
     return (
         <div className='d-flex' >
-            <div style={{width: '15%', marginRight: '20px'}}>
+            {console.log(products)}
+            <div  style={{width: '15%', marginRight: '20px'}}>
                 <ListGroup>
                     {categories}
                 </ListGroup>
             </div>
-            <div className='d-flex' style={{width: '85%'}}>
+            <div  className='d-flex flex-wrap' style={{width: '85%'}}>
                 {productsCards}
             </div>
         </div>

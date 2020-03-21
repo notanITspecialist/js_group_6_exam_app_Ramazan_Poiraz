@@ -1,6 +1,8 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {getProduct} from "../../actions/product";
+import {deleteProduct, getProduct} from "../../actions/product";
+import CardImg from "reactstrap/es/CardImg";
+import {Button} from "reactstrap";
 
 const Product = props => {
     const dispatch = useDispatch();
@@ -10,11 +12,12 @@ const Product = props => {
     const user = useSelector(state => state.authorization.user);
 
     useEffect(() => {
-        dispatch(getProduct(props.match.params.id))
-    }, [dispatch, props.match.params.id]);
+        dispatch(getProduct(props.match.params.id, user.token))
+    }, [dispatch, props.match.params.id, user.token]);
+
     return (
         <div>
-            <img className='img-thumbnail' style={{width: '250px', float: 'left', marginRight: '10px'}} src={"http://localhost:8000/uploads/"+product.image} alt="Card image cap"/>
+            <CardImg className='img-thumbnail' style={{width: '250px', float: 'left', marginRight: '10px'}} src={"http://localhost:8000/uploads/"+product.image} alt="Card image cap"/>
             <h2><b>Title: </b>{product.title}</h2>
             <p><b>Description: </b>{product.description}</p>
             {product.category && <p><b>Category: </b>{product.category.name}</p>}
@@ -25,11 +28,9 @@ const Product = props => {
                     <p><b>phone: </b> {product.author.phone}</p>
                 </div>
             )}
-            {' '}
-            {console.log(user, product.author)}
-            {/*{product.author.token === user.token && (*/}
-            {/*    <Button color='danger'>Delete</Button>*/}
-            {/*)}*/}
+            {product.author && user.token === product.author.token && (
+                    <Button onClick={() => deleteProduct(product._id, user.token, props.history)} className='d-block' color='danger'>Delete</Button>
+                )}
         </div>
     );
 };

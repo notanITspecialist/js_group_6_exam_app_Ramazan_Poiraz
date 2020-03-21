@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Button, Col, Form, FormFeedback, FormGroup, Input, Label} from "reactstrap";
 import {useDispatch, useSelector} from "react-redux";
 import {registerUser} from "../../actions/user";
+import Toast from "light-toast";
 
 const Registration = props => {
     const initLoginForm = {
@@ -17,6 +18,11 @@ const Registration = props => {
 
     const registerUserOnSubmit = async e => {
         e.preventDefault();
+
+        if(loginForm.username.length < 5) return Toast.success('Имя пользователя должно содержать больше 5 символов!',2000);
+        if(loginForm.password.length < 5) return Toast.success('Пароль должен содержать больше пяти символов!',2000);
+        if(loginForm.phone.length < 5) return Toast.success('Номер телефона должен содержать больше пяти символов!',2000);
+
         await dispatch(registerUser(loginForm,props.history));
     };
 

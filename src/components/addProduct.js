@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import Button from "reactstrap/es/Button";
 import {getCategories} from "../actions/products";
 import {addProduct} from "../actions/product";
+import Toast from "light-toast";
 
 const AddProduct = props => {
     const initialAddPost = {
@@ -36,15 +37,20 @@ const AddProduct = props => {
 
     const user = useSelector(state => state.authorization.user);
 
-    const addNewProductClick = e => {
+    const addNewProductClick = async e => {
         e.preventDefault();
+
+        if(newProduct.title.length < 5) return Toast.success('Title должен содержать больше пяти символов!',2000);
+        if(newProduct.description.length < 10) return Toast.success('Description должен содержать больше десяти символов!',2000);
+        if(newProduct.category === '') return Toast.success('Выберите категорию!',2000);
+
         const data = new FormData();
 
         Object.keys(initialAddPost).forEach(e => {
             data.append(e, newProduct[e])
         });
 
-        dispatch(addProduct(data, user.token, props.history, newProduct.category));
+        await addProduct(data, user.token, props.history, newProduct.category);
     };
 
     const categoriesSelect = categories.map(e => (
@@ -57,31 +63,31 @@ const AddProduct = props => {
             <FormGroup row>
                 <Label sm={2} for='title'>Title</Label>
                 <Row>
-                    <Input reqired='true' value={newProduct.title} onChange={changeForm} name='title' id='title'/>
+                    <Input required value={newProduct.title} onChange={changeForm} name='title' id='title'/>
                 </Row>
             </FormGroup>
             <FormGroup row>
                 <Label sm={2} for='description'>description</Label>
                 <Row>
-                    <Input reqired='true' value={newProduct.description} onChange={changeForm} name='description' id='description'/>
+                    <Input required value={newProduct.description} onChange={changeForm} name='description' id='description'/>
                 </Row>
             </FormGroup>
             <FormGroup row>
                 <Label sm={2} for='image'>image</Label>
                 <Row>
-                    <Input reqired='true' onChange={changeFileForm} name='image' type='file' id='image'/>
+                    <Input required onChange={changeFileForm} name='image' type='file' id='image'/>
                 </Row>
             </FormGroup>
             <FormGroup row>
                 <Label sm={2} for='price'>price</Label>
                 <Row>
-                    <Input value={newProduct.price} reqired='true' onChange={changeForm} name='price' id='price'/>
+                    <Input value={newProduct.price} required onChange={changeForm} name='price' id='price'/>
                 </Row>
             </FormGroup>
             <FormGroup>
                 <Label  for="exampleSelect">Select</Label>
                 <Row>
-                    <Input reqired='true' type="select" name="category" onChange={changeForm} id="exampleSelect">
+                    <Input required type="select" name="category" onChange={changeForm} id="exampleSelect">
                         <option>Set category</option>
                         {categoriesSelect}
                     </Input>

@@ -1,4 +1,5 @@
 import axios from "axios";
+import Toast from "light-toast";
 
 export const REGISTER_USER_RES = 'REGISTER_USER_RES';
 export const REGISTER_USER_ERROR = 'REGISTER_USER_ERROR';
@@ -22,8 +23,10 @@ export const registerUser = (register, history) => async dispatch => {
         const data = await axios.post('http://localhost:8000/user', register);
         if(data.data.error) return  dispatch(regUserError(data.data.error));
         dispatch(regUserRes(data.data));
+        Toast.success('Registration success!',500);
         history.push('/')
     } catch (e) {
+        Toast.fail('Such username already exists',500);
         dispatch(regUserError(e));
     }
 };
@@ -32,8 +35,10 @@ export const loginUser = (register, history) => async dispatch => {
         const data = await axios.post('http://localhost:8000/user/sessions', register);
         if(data.data.error) return  dispatch(loginUserError(data.data.error));
         dispatch(regUserRes(data.data));
+        Toast.success('Login success!',500);
         history.push('/')
     } catch (e) {
+        Toast.fail('Username or password is incorrect',500);
         dispatch(loginUserError(e));
     }
 };
@@ -43,6 +48,6 @@ export const logoutUser = () => async (dispatch, getState) => {
     const header = {'Authorization': "Token "+token};
 
     await axios.delete('http://localhost:8000/user/sessions', {headers: header});
-
+    Toast.success('Logout success!', 500);
     dispatch(logoutUserSuc())
 };
