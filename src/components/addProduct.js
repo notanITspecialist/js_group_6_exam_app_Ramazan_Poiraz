@@ -40,9 +40,9 @@ const AddProduct = props => {
     const addNewProductClick = async e => {
         e.preventDefault();
 
-        if(newProduct.title.length < 5) return Toast.success('Title должен содержать больше пяти символов!',2000);
-        if(newProduct.description.length < 10) return Toast.success('Description должен содержать больше десяти символов!',2000);
-        if(newProduct.category === '') return Toast.success('Выберите категорию!',2000);
+        if(newProduct.title.length < 5) return Toast.fail('Title должен содержать больше пяти символов!',2000);
+        if(newProduct.description.length < 10) return Toast.fail('Description должен содержать больше десяти символов!',2000);
+        if(newProduct.category === '') return Toast.fail('Выберите категорию!',2000);
 
         const data = new FormData();
 

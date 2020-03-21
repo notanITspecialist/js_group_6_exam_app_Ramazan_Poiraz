@@ -19,9 +19,9 @@ const Registration = props => {
     const registerUserOnSubmit = async e => {
         e.preventDefault();
 
-        if(loginForm.username.length < 5) return Toast.success('Имя пользователя должно содержать больше 5 символов!',2000);
-        if(loginForm.password.length < 5) return Toast.success('Пароль должен содержать больше пяти символов!',2000);
-        if(loginForm.phone.length < 5) return Toast.success('Номер телефона должен содержать больше пяти символов!',2000);
+        if(loginForm.username.length < 5) return Toast.fail('Имя пользователя должно содержать больше 5 символов!',2000);
+        if(loginForm.password.length < 5) return Toast.fail('Пароль должен содержать больше пяти символов!',2000);
+        if(loginForm.phone.length < 5) return Toast.fail('Номер телефона должен содержать больше пяти символов!',2000);
 
         await dispatch(registerUser(loginForm,props.history));
     };
