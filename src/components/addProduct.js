@@ -81,7 +81,7 @@ const AddProduct = props => {
             <FormGroup row>
                 <Label sm={2} for='price'>price</Label>
                 <Row>
-                    <Input value={newProduct.price} required onChange={changeForm} name='price' id='price'/>
+                    <Input value={newProduct.price} type='number' required onChange={changeForm} name='price' id='price'/>
                 </Row>
             </FormGroup>
             <FormGroup>
